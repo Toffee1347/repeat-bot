@@ -1,0 +1,16 @@
+{
+	"compilerOptions": {
+		"target": "ES2022",
+		"module": "commonjs",
+		"lib": ["es6"],
+		"moduleResolution": "node",
+		"sourceMap": false,
+		"outDir": "dist/tsc"
+	},
+	"include": [
+		"src/**/*.ts"
+	],
+	"exclude": [
+		"node_modules"
+	],
+}
