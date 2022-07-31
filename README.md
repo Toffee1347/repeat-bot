@@ -1,8 +1,9 @@
 # Repeat Bot
 
-* Repeat bot is a simple Discord bot that repeats a message sent by a specified user. Its built using [Discord.js](https://discord.js.org/).
-* To complile the code into an exe, run `yarn` to install dependencies, then run `yarn build`.
-* You can also run the bot with `yarn dev`, but this will recopile the code every time.
+Repeat bot is a simple Discord bot that repeats a message sent by a specified user. Its built using [Discord.js](https://discord.js.org/).
+To complile the code into an exe, run `yarn` to install dependencies, then run `yarn build`.
+You can also run the bot with `yarn dev`, but this will recopile the code every time.
+
 
 * To get the bot setup, first create an application on the [Discord Developer Portal](https://discordapp.com/developers/applications/).
 * Then add the bot to your application by clicking on the "Add Bot" button under the bot section.
