@@ -1,3 +1,5 @@
+_Note: This should not be used maliciously in anyway and was only created as a result of a request from a friend_
+
 # Repeat Bot
 
 Repeat bot is a simple Discord bot that repeats a message sent by a specified user. Its built using [Discord.js](https://discord.js.org/).
