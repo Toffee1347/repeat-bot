@@ -1,4 +1,4 @@
-import {testEslint, testTypescript, compile, packageCode} from './buildUtils.mjs';
+import {testEslint, testTypescript, packageCode} from './buildUtils.mjs';
 
 async function main() {
 	const noPackage = process.argv.includes('--no-package');
@@ -8,9 +8,6 @@ async function main() {
 
 	console.log('Testing and compiling typescript...');
 	if (!(await testTypescript())) return;
-
-	console.log('Compiling...');
-	if (!(await compile())) return;
 
 	if (!noPackage) {
 		console.log('Packaging...');

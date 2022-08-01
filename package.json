@@ -1,25 +1,27 @@
 {
   "name": "repeatbot",
   "version": "1.0.0",
-  "main": "dist/index.js",
+  "main": "dist/tsc/index.js",
   "license": "MIT",
   "dependencies": {
     "discord.js": "^14.1.2",
     "readline": "^1.3.0"
   },
   "scripts": {
-    "dev": "node build.mjs --no-package && node dist/esbuild/index.js",
+    "dev": "node build.mjs --no-package && node dist/tsc/index.js",
     "build": "node build.mjs"
   },
   "devDependencies": {
     "@types/eslint": "^8.4.5",
     "@typescript-eslint/eslint-plugin": "^5.31.0",
     "@typescript-eslint/parser": "^5.31.0",
-    "esbuild": "^0.14.51",
     "eslint": "^8.20.0",
     "eslint-config-google": "^0.14.0",
     "pkg": "^5.8.0",
     "typescript": "^4.7.4"
+  },
+  "resolutions": {
+    "@discordjs/collection": "^1.0.1"
   },
   "type": "commonjs"
 }

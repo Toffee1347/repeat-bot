@@ -2,10 +2,6 @@ import {ESLint} from 'eslint';
 
 import {exec as cliExec} from 'child_process';
 
-import path from 'path';
-import {fileURLToPath} from 'url';
-import {build} from 'esbuild';
-
 import {exec as pkgExec} from 'pkg';
 
 export async function testEslint() {
@@ -36,30 +32,9 @@ export function testTypescript() {
 	});
 }
 
-const __filename = fileURLToPath(import.meta.url);
-const __dirname = path.dirname(__filename);
-
-export async function compile() {
-	try {
-		const buildRes = await build({
-			bundle: true,
-			format: 'cjs',
-			target: 'es2020',
-			platform: 'node',
-			entryPoints: [path.join(__dirname, 'dist', 'tsc', 'index.js')],
-			outdir: path.join(__dirname, 'dist', 'esbuild'),
-		});
-		if (buildRes.errors.length !== 0) console.error(buildRes.errors);
-		return buildRes.errors.length === 0;
-	} catch (err) {
-		console.error(err);
-		return false;
-	}
-}
-
 export async function packageCode() {
 	try {
-		await pkgExec(['dist/esbuild/index.js', '--target', 'node16-win-x64', '--output', 'dist/repeatBot.exe']);
+		await pkgExec(['dist/tsc/index.js', '--target', 'node16-win-x64', '--output', 'dist/repeatBot.exe']);
 		return true;
 	} catch (err) {
 		console.error(err);
