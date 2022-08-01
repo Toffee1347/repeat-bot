@@ -40,7 +40,7 @@ export default class Bot {
 			await this.client.login(this.main.configFile.token);
 		} catch (err) {
 			this.main.errorLog('Failed to login, deleting config file');
-			this.main.errorLog('Make sure the token is corrent and bot has message content enabled');
+			this.main.errorLog('Make sure the token is correct and bot has message content enabled');
 			this.main.deleteConfigFile();
 			process.exit(1);
 		}

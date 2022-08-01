@@ -8,8 +8,6 @@ import {build} from 'esbuild';
 
 import {exec as pkgExec} from 'pkg';
 
-import resourceHacker from '@lorki97/node-resourcehacker';
-
 export async function testEslint() {
 	try {
 		const eslint = new ESLint();
@@ -67,20 +65,4 @@ export async function packageCode() {
 		console.error(err);
 		return false;
 	}
-}
-
-export function changePackageIcon() {
-	return new Promise((resolve) => {
-		resourceHacker({
-			operation: 'addoverwrite',
-			input: 'dist/repeatBot.exe',
-			output: 'dist/repeatBot.exe',
-			resource: 'icons/icon.ico',
-			resourceType: 'ICONGROUP',
-			resourceName: '1',
-		}, (err) => {
-			if (err) console.error(err);
-			resolve(!err);
-		});
-	});
 }
