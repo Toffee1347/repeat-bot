@@ -34,7 +34,7 @@ export function testTypescript() {
 
 export async function packageCode() {
 	try {
-		await pkgExec(['dist/tsc/index.js', '--target', 'node16-win-x64', '--output', 'dist/repeatBot.exe']);
+		await pkgExec(['dist/tsc/index.js', '--target', 'node16-win,node16-linux', '--output', 'dist/repeatBot']);
 		return true;
 	} catch (err) {
 		console.error(err);
