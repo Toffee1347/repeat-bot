@@ -1,11 +1,12 @@
 import {readFileSync, writeFileSync, unlinkSync} from 'fs';
 
 import {Config} from './types';
-import input from './input.js';
+import input from './input';
 import Bot from './Bot';
+import validateConfig from './validateConfig';
 
 export default class Main {
-	private _configFile: Config = null;
+	config: Config = null;
 	bot: Bot;
 
 	constructor() {
@@ -14,42 +15,59 @@ export default class Main {
 
 	async run() {
 		this.infoLog('Fetching config.json confguration file');
-		const configFile = this.configFile;
-		if (!configFile) {
-			await this.setUpConfigFile();
-		}
+		const configFile = this.getConfig();
+		if (!configFile) await this.setUpConfigFile();
 		this.bot = new Bot(this, () => {
-			// this.beginUserPromt();
+			[
+				'Welcome to the repeat bot!',
+				'How to use:',
+				'	* Type \'!users list\' to view all users that are currently being repeated',
+				'	* Type \'!users add @user\' to add a user to the list of users to be repeated',
+				'	* Type \'!users remove @user\' to remove a user from the list of users to be repeated',
+			].forEach(this.infoLog);
+			this.beginUserPromt();
 		});
 	}
 
 	async setUpConfigFile() {
 		const token = await input('Enter your Discord token: ');
-		const userId = await input('Enter the Discord user ID to repeat: ');
-		this.configFile = {
+		const ownerId = await input('Enter the admin\'s Discord user ID: ');
+		this.config = {
 			token,
-			userId,
+			ownerId,
 		};
 	}
 
 	async beginUserPromt() {
-		const userId = await input('Enter the Discord user ID to repeat: ');
-		this.configFile.userId = userId;
+		const userId = await input('Enter the Discord user ID of the admin user: ');
+		this.config.ownerId = userId;
+		this.setConfig(this.config);
 		this.beginUserPromt();
 	}
 
-	set configFile(configFile: Config) {
+	addUser(userId: string) {
+		if (this.config.users.includes(userId)) return;
+		this.config.users.push(userId);
+		this.setConfig(this.config);
+	}
+
+	removeUser(userId: string) {
+		this.config.users = this.config.users.filter((id) => id !== userId);
+		this.setConfig(this.config);
+	}
+
+	setConfig(configFile: Config) {
 		try {
 			writeFileSync('./config.json', JSON.stringify(configFile));
-			this._configFile = configFile;
+			this.config = configFile;
 		} catch (err) {
 			this.errorLog('Failed to write config file', err);
 		}
 	}
 
-	get configFile(): Config {
+	getConfig(): Config {
 		// Check if config file has already been loaded
-		if (this._configFile) return this._configFile;
+		if (this.config) return this.config;
 		// Load config file
 		let configFile: string;
 		try {
@@ -60,18 +78,15 @@ export default class Main {
 		}
 		// Parse config file
 		try {
-			this._configFile = JSON.parse(configFile);
-			// Validate config file
-			if (!this._configFile.token || !this._configFile.userId) {
-				throw new Error('Invalid config file');
-			}
+			this.config = validateConfig(JSON.parse(configFile));
 		} catch (err) {
+			this.warningLog(`Error in config file: ${err.message}`);
 			this.warningLog('Invalid config.json file, deleting and initializing a new one');
-			this._configFile = null;
+			this.config = null;
 			this.deleteConfigFile();
 			return null;
 		}
-		return this._configFile;
+		return this.config;
 	}
 
 	deleteConfigFile() {
