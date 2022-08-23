@@ -32,10 +32,11 @@ export default class Main {
 	async setUpConfigFile() {
 		const token = await input('Enter your Discord token: ');
 		const ownerId = await input('Enter the admin\'s Discord user ID: ');
-		this.config = {
+		this.setConfig({
 			token,
 			ownerId,
-		};
+			users: [],
+		});
 	}
 
 	async beginUserPromt() {

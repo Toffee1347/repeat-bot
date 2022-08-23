@@ -77,7 +77,13 @@ export default class Bot {
 				}
 			}
 			if (!(message.author.id === this.client.user.id) && this.main.config.users?.includes(message.author.id)) {
-				message.reply(message.content);
+				const content = message.content === '' ? (
+					message.attachments.first() ? message.attachments.first().url : undefined
+				) : message.content;
+				if (!content) return;
+				message.reply({
+					content,
+				});
 			}
 		});
 		this.client.on('ready', () => {
